@@ -1,27 +1,52 @@
 public class PracticeProblem {
 
-	public static void main(String args[]) {
+    public static int searchMazeMoves(String[][] maze) {
+        int rows = maze.length;
+        int cols = maze[0].length;
 
-	}
+        // Find the start position (bottom-left)
+        int startRow = rows - 1;
+        int startCol = 0;
 
-	public static void q1() {
-		//Write question 1 code here
-	}
+        // Directions: up, down, left, right
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
 
-	public static void q2() {
-		//Write question 2 code here
-	}
+        boolean[][] visited = new boolean[rows][cols];
+        java.util.Queue<int[]> queue = new java.util.LinkedList<>();
 
-	public static void q3() {
-		//Write question 3 code here
-	}
+        // Add start point to the queue with step count 0
+        queue.add(new int[]{startRow, startCol, 0});
+        visited[startRow][startCol] = true;
 
-	public static void q4() {
-		//Write question 4 code here
-	}
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int r = current[0];
+            int c = current[1];
+            int steps = current[2];
 
-	public static void q5() {
-		//Write question 5 code here
-	}
+            if (maze[r][c].equals("F")) {
+                return steps; // Finish found
+            }
 
+            // Explore 4 directions
+            for (int i = 0; i < 4; i++) {
+                int newR = r + dr[i];
+                int newC = c + dc[i];
+
+                // Check bounds and wall
+                if (newR >= 0 && newR < rows && newC >= 0 && newC < cols &&
+                    !maze[newR][newC].equals("*") && !visited[newR][newC]) {
+
+                    visited[newR][newC] = true;
+                    queue.add(new int[]{newR, newC, steps + 1});
+                }
+            }
+        }
+
+        return -1; // No path to finish found
+    }
 }
+
+
+
